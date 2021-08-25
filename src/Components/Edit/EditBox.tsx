@@ -1,8 +1,12 @@
-import { useRecoilState } from 'recoil';
-import styled from 'styled-components';
-import { create } from '../../apis';
-import { contactsState, editedContactState } from '../../store';
-import EditItem from './EditItem';
+import { useRecoilState } from "recoil";
+import styled from "styled-components";
+import { create } from "../../apis";
+import {
+  contactsState,
+  editedContactState,
+  selectedContactState,
+} from "../../store";
+import EditItem from "./EditItem";
 
 const Box = styled.div`
   display: flex;
@@ -65,15 +69,27 @@ const EditBox = ({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) => {
 
   return (
     <Box>
-      <Title>{editedContact.id ? '연락처를 업데이트 하세요' : '연락처를 등록하세요'}</Title>
-      <EditItem title="이름" keyString="name" value={editedContact.name} onChange={handleChange} />
+      <Title>
+        {editedContact.id ? "연락처를 업데이트 하세요" : "연락처를 등록하세요"}
+      </Title>
+      <EditItem
+        title="이름"
+        keyString="name"
+        value={editedContact.name}
+        onChange={handleChange}
+      />
       <EditItem
         title="전화번호"
         keyString="phoneNumber"
         value={editedContact.phoneNumber}
         onChange={handleChange}
       />
-      <EditItem title="나이" keyString="age" value={editedContact.age} onChange={handleChange} />
+      <EditItem
+        title="나이"
+        keyString="age"
+        value={editedContact.age}
+        onChange={handleChange}
+      />
       <EditItem
         title="email"
         keyString="email"
