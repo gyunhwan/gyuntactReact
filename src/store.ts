@@ -1,6 +1,6 @@
-import { atom } from 'recoil';
-import { getAll } from './apis';
-import { Contact, EditContact } from './types';
+import { atom, selector } from "recoil";
+import { getAll } from "./apis";
+import { Contact, EditContact } from "./types";
 
 const getAllContact = async (): Promise<Contact[]> => {
   const response = await getAll();
@@ -9,21 +9,34 @@ const getAllContact = async (): Promise<Contact[]> => {
 };
 
 export const selectedContactState = atom<Contact | null>({
-  key: 'selectedContact',
+  key: "selectedContact",
   default: null,
 });
 
+export const filterContactState = selector({
+  key: "filterContactState",
+  get: ({ get }) => {
+    const filter = get(contactsState);
+    const keyword = get(keyWordState);
+    return filter.filter((contact) => {
+      Object.values(contact).reduce((acc, cur) => {
+        return acc || String(cur).includes(keyword);
+      });
+    });
+  },
+});
+
 export const keyWordState = atom<string>({
-  key: 'keywordState',
-  default: '',
+  key: "keywordState",
+  default: "",
 });
 
 export const contactsState = atom<Contact[]>({
-  key: 'contactsState',
+  key: "contactsState",
   default: getAllContact(),
 });
 
 export const editedContactState = atom<EditContact>({
-  key: 'editContactsState',
+  key: "editContactsState",
   default: {},
 });

@@ -22,5 +22,19 @@ export const create = async (editContact: EditContact) => {
       "Content-Type": "application/json",
     },
   });
+
+  return result;
+};
+
+export const update = async (editContact: EditContact) => {
+  const result = await fetch(`${apiBaseUrl}/${editContact.id}`, {
+    method: "PUT",
+    body: JSON.stringify({ ...editContact, age: Number(editContact.age) }),
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      Accept: "*/*",
+    },
+  });
   return result;
 };

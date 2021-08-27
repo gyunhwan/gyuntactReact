@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import { Contact } from '../../types';
-import { useRecoilState } from 'recoil';
-import { selectedContactState } from '../../store';
+import styled from "styled-components";
+import { Contact } from "../../types";
+import { useRecoilState } from "recoil";
+import { selectedContactState } from "../../store";
 
 const Card = styled.li<{ isSelect: boolean }>`
   display: flex;
-  background-color: ${(props) => (props.isSelect ? '#28adfa' : 'inherit')};
+  background-color: ${(props) => (props.isSelect ? "#28adfa" : "inherit")};
 `;
 
 const Button = styled.button<{ isSelect: boolean }>`
@@ -19,7 +19,7 @@ const Button = styled.button<{ isSelect: boolean }>`
   padding-left: 20px;
   z-index: 0;
   background-color: transparent;
-  color: ${(props) => (props.isSelect ? 'white' : 'inherit')};
+  color: ${(props) => (props.isSelect ? "white" : "inherit")};
 `;
 
 const Name = styled.div`
@@ -31,10 +31,14 @@ const PhoneNumber = styled.div`
 `;
 
 const ContactCard = ({ contact }: { contact: Contact }) => {
-  const [selectedContact, setSelectedContact] = useRecoilState(selectedContactState);
+  const [selectedContact, setSelectedContact] =
+    useRecoilState(selectedContactState);
   return (
     <Card isSelect={selectedContact === contact}>
-      <Button isSelect={selectedContact === contact} onFocus={() => setSelectedContact(contact)}>
+      <Button
+        isSelect={selectedContact === contact}
+        onFocus={() => setSelectedContact(contact)}
+      >
         <Name>{contact.name}</Name>
         <PhoneNumber>{contact.phoneNumber}</PhoneNumber>
       </Button>

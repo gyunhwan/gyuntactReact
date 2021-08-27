@@ -1,6 +1,6 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { create } from "../../apis";
+import { create, update } from "../../apis";
 import {
   contactsState,
   editedContactState,
@@ -45,7 +45,7 @@ const CancelButton = styled.button`
 const EditBox = ({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) => {
   const [editedContact, setEditedContact] = useRecoilState(editedContactState);
   const [contacts, setContacts] = useRecoilState(contactsState);
-
+  const setSelectedContact = useSetRecoilState(selectedContactState);
   const handleChange = (keyString: string, value: string) => {
     const newEditContact: any = { ...editedContact };
     newEditContact[keyString] = value;
@@ -54,6 +54,7 @@ const EditBox = ({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) => {
 
   const handleSave = async () => {
     const response = await create(editedContact);
+    console.log(response);
     if (response.ok) {
       const contact = await response.json();
       setContacts([...contacts, contact]);
@@ -61,7 +62,23 @@ const EditBox = ({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) => {
       setIsEdit(false);
     }
   };
+  const handleModify = async () => {
+    const response = await update(editedContact);
 
+    if (response.ok) {
+      const contact = await response.json();
+      console.log(contact);
+      let temp = contacts.slice(0);
+      const index = temp.findIndex((value) => {
+        return value.id === contact.id;
+      });
+      temp.splice(index, 1, contact);
+      setContacts(temp);
+      setSelectedContact(contact);
+      setEditedContact({});
+      setIsEdit(false);
+    }
+  };
   const handleCancel = () => {
     setEditedContact({});
     setIsEdit(false);
@@ -103,7 +120,9 @@ const EditBox = ({ setIsEdit }: { setIsEdit: (isEdit: boolean) => void }) => {
         onChange={handleChange}
       />
       <ButtonBox>
-        <ConfirmButton onClick={handleSave}>확인</ConfirmButton>
+        <ConfirmButton onClick={editedContact.id ? handleModify : handleSave}>
+          {editedContact.id ? "수정" : "등록"}
+        </ConfirmButton>
         <CancelButton onClick={handleCancel}>취소</CancelButton>
       </ButtonBox>
     </Box>

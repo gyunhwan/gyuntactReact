@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import SearchBox from './SearchBox';
-import ContactCard from './ContactCard';
-import { useRecoilValue } from 'recoil';
-import { contactsState, keyWordState } from '../../store';
-import { Contact } from '../../types';
+import styled from "styled-components";
+import SearchBox from "./SearchBox";
+import ContactCard from "./ContactCard";
+import { useRecoilValue } from "recoil";
+import { contactsState, filterContactState, keyWordState } from "../../store";
+import { Contact } from "../../types";
 
 const Box = styled.div`
   flex: 1;
